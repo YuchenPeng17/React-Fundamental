@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+  </head>
+  <body>
+    <!-- Import React Core Library -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Import React-DOM for DOM operation -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Import babel for transfering jsx to js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Prepare a container -->
+    <div id="root"></div>
+    <!-- Start Here with text/babel -->
+    <script type="text/babel">
+        //1.Create Component
+        class Weather extends React.Component {
+            
+            constructor(props){
+                //调用次数1次：初始化实例时调用一次
+                //Super Constructor
+                super(props);
+                //Initialise
+                this.state = {isHot: true};
+                //用类原型的changeWeather方法生成一个新的changeWeather方法，并且bind挂在实例自身上。
+                this.changeWeather = this.changeWeather.bind(this);
+            }
+            changeWeather(){
+                //调用次数n次：点几次调用几次
+                //changeWeather：放在Weather的原型对象上，供实例使用。
+                //由于changeWeather是作为onClick的回调，所以不是通过实例调用，而是直接调用。
+                //类中的方法默认开启了局部strict mode，所以this最终会变成undefiend。
+
+                //【严重注意】：状态state不可直接更改，如下行代码所示
+                // this.state.isHot = !this.state.isHot;
+
+                //【严重注意】：状态state必须通过React.Component原型中的setState进行修改。
+                // 更新是一种合并，不是替换，同名覆写，不同名保留。
+                this.setState({isHot:!this.state.isHot});
+            }
+            render(){
+                //调用次数1+n次：初始化一次，后面每更换一次state重新render一次
+                return(
+                    //如果使用onClick="func()"，function会被以string对待，所以使用{}。
+                    //func()和func，带括号是直接调用函数，onClick会拿到执行完函数的返回值undefined，所以使用func。
+                <h1 onClick={this.changeWeather}>Today's weather is {this.state.isHot ? 'hot' : 'cool'}.</h1>
+                )
+            };
+        }
+        //2.Render component to the page
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Weather/>);
+    </script>
+  </body>
+</html>

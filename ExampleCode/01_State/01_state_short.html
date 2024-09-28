@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+  </head>
+  <body>
+    <!-- Import React Core Library -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Import React-DOM for DOM operation -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Import babel for transfering jsx to js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Prepare a container -->
+    <div id="root"></div>
+    <!-- Start Here with text/babel -->
+    <script type="text/babel">
+        //1.Create Component
+        class Weather extends React.Component {
+          //初始化状态
+          state = {isHot: true};
+          
+          //自定义方法-要用赋值语句+箭头函数的形式
+          //箭头函数的this是外层函数的this
+          changeWeather = () => {
+              this.setState({isHot:!this.state.isHot});
+          }
+
+          render(){
+              return(
+              <h1 onClick={this.changeWeather}>Today's weather is {this.state.isHot ? 'hot' : 'cool'}.</h1>
+              )
+          };
+        }
+        //2.Render component to the page
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Weather/>);
+    </script>
+  </body>
+</html>
