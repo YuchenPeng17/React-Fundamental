@@ -1,5 +1,7 @@
 React
 
+mdn: https://developer.mozilla.org/en-US/
+
 1.
 
 **React**: An open-source JavaScript library for rendering data into HTML views, primarily used for building user interfaces. It enables the creation of reusable UI components and efficiently updates the view when data changes.
@@ -209,9 +211,70 @@ Function Component没有this，没有实例化，没有这三大核心
 
    
 
+**Props**
+
+1. 关于`...`展开运算符
+
+```jsx
+const user = { name: 'John', age: 25 };
+const MyComponent = () => {
+    return <UserProfile {...user} />;
+};
+
+/*
+1.这里的{}是说要使用js语法了
+2.使用...user 直接展开 user 对象并将它的属性传递给 UserProfile 组件。这是 JSX 的特性。
+*/
+```
+
+```javascript
+const user = { name: 'John', age: 25 };
+
+// 正确的对象展开用法，用一个{}包裹
+const newUser = { ...user, location: 'NY' };
+console.log(newUser); // { name: 'John', age: 25, location: 'NY' }
+
+// 错误的对象展开方式（会报错）
+const result = ...user; // SyntaxError: Unexpected token ...
+
+/*
+1.在原生 JavaScript 中，展开对象时需要用 {} 包裹。{...user} 是将 user 对象的所有属性展开到一个新的对象中。
+2.如果直接使用 ... 展开对象而不在 {} 中，会导致语法错误。
+*/
+```
 
 
 
+2. 关于classComponent的**propTypes和defaultProps**
+
+```html
+<!-- Import prop-types for prop type checking -->
+<script src="https://unpkg.com/prop-types/prop-types.js"></script>
+```
+
+```jsx
+Person.propTypes = {
+  name: PropTypes.string.isRequired,
+  age: PropTypes.number,
+  gender: PropTypes.string,
+  speak: PropTypes.func
+};
+Person.defaultProps = {
+  age: 0,
+  gender: "N/A"
+};
+```
 
 
+
+3. 
+
+   - props中的属性是read-only
+
+     ```jsx
+     //Error
+     this.props.name = "jack";
+     ```
+
+     
 
