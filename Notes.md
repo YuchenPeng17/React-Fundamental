@@ -1,16 +1,16 @@
-React
+# React
+
+### 资料区
 
 mdn: https://developer.mozilla.org/en-US/
 
-1.
+
+
+### React Features / React 的特点：
 
 **React**: An open-source JavaScript library for rendering data into HTML views, primarily used for building user interfaces. It enables the creation of reusable UI components and efficiently updates the view when data changes.
 
 **React**：一个用于将数据渲染为 HTML 视图的开源 JavaScript 库，主要用于构建用户界面。它支持创建可重用的 UI 组件，并高效更新视图以响应数据变化。
-
-
-
-### React Features (React 的特点):
 
 1. **Component-based structure and declarative coding**: This increases development efficiency and component reusability.
    - **采用组件化模式、声明式编码**：提高开发效率及组件复用率。
@@ -22,24 +22,45 @@ mdn: https://developer.mozilla.org/en-US/
 
 
 
-2.
+### 基础知识
 
-JSX: Javascript XML
+#### **React的四个拓展包**
 
-react.development
+```html
+<!-- Import React Core Library -->
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<!-- Import React-DOM for DOM operation -->
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<!-- Import babel for transfering jsx to js -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Import prop-types for prop type checking -->
+<script src="https://unpkg.com/prop-types/prop-types.js"></script>
+```
 
-react-dom.development
-
-babel.min.js
-
-JSON
-
-- parse
-- stringfy
 
 
+#### **JSON**
 
-**虚拟DOM**
+- parse: 将一个 JSON 格式的字符串解析（转换）成 JavaScript 对象。
+
+  ```javascript
+  const jsonString = '{"name": "Alice", "age": 25}';
+  const obj = JSON.parse(jsonString);
+  // obj.name, obj.age
+  ```
+
+- stringfy: 将一个 JavaScript 对象或值转换为 JSON 格式的字符串。
+
+  ```javascript
+  const obj = { name: "Alice", age: 25, isStudent: false };
+  const jsonString = JSON.stringify(obj);
+  console.log(jsonString); 
+  // 输出: {"name":"Alice","age":25,"isStudent":false}
+  ```
+
+
+
+#### **虚拟DOM**
 
 - 虚拟DOM本质是一个Object类型的对象
 
@@ -48,7 +69,7 @@ JSON
 
 
 
-**jsx语法规则：**
+#### **jsx语法规则**
 
 - 定义虚拟DOM时，不要写引号。
 - 标签中混入JS表达式的时候用{}。
@@ -61,7 +82,7 @@ JSON
     - if(){}
     - for(){}
     - switch(){}
-- 样式？标签的类名指定不要用class，要用className。
+- 标签的类名指定不要用class，要用className。
 - 內联样式，要用style={{key:'value'}}的形式去写。
 - 只有一个根标签
 - 标签必须闭合
@@ -71,14 +92,16 @@ JSON
 
 
 
-**模块：**
+#### **模块**
 
 - 理解：向外提供特定功能的js程序，一般就是一个js文件。
 - 为什么要拆成膜快：随着业务逻辑增加，代码越来越多且复杂。
 - 作用：复用js，简化js的编写，提高js运行效率。
 - 模块化：应用的js都以模块来编写，称之为模块化的应用
 
-**组件:**
+
+
+### **组件**
 
 - 理解：用来实现局部功能效果的代码和资源的集合（HTML/CSS/JS...）。
 - 为什么：一个界面的功能更复杂
@@ -87,7 +110,7 @@ JSON
 
 
 
-**函数式组件：**
+#### **函数式组件**
 
 ```jsx
 //1.创建函数式组件
@@ -105,7 +128,7 @@ ReactDOM.render(<myComponent/>, document.getElementById('id'));
 
 
 
-**类式组件：**
+#### **类式组件**
 
 ```jsx
 //1.创建类式组件
@@ -113,7 +136,7 @@ class myComponent extends React.Component{
   //render(): 放在myComponent的原型对象上供实例使用
   //this: myComponent组件实例对象
   render(){
-    return <h2>我是用类定义的组件（适用于【复杂组件】的定义）</h2>
+    return (<h2>我是用类定义的组件（适用于【复杂组件】的定义）</h2>)
   }
 }
 //2.渲染组件到页面
@@ -129,7 +152,7 @@ ReactDOM.render(<myComponent/>, document.getElementById('id'));
 
 
 
-**class复习：**
+#### **class复习**
 
 ```javascript
 class Person {
@@ -166,7 +189,7 @@ s1.speak();
 
 
 
-**组件实例的三大核心**
+### **组件实例的三大核心**
 
 - state
 - props
@@ -176,14 +199,20 @@ Function Component没有this，没有实例化，没有这三大核心
 
 
 
-**State**
+#### **State**
+
+**定义**: `state` 是组件的“内部数据”，由组件自己维护。
+
+**作用**: `state` 用来保存组件内部的状态信息，可以通过事件或其他操作修改状态，从而更新界面。
+
+**特点**: `state` 是可变的，组件可以通过 `setState` 或 `useState` 来修改它的值。
 
 理解：
 
 1. state的值是一个对象，包含多个key-value的组合。
 2. 组件被称为“状态机”，通过更新组件的state来更新对应的页面显示（重新渲染组件）。
 
-强烈注意：
+**强烈注意：**
 
 1. 组件中的render方法中的this为组件实例对象。
 
@@ -203,6 +232,12 @@ Function Component没有this，没有实例化，没有这三大核心
      }
      ```
 
+   - 调用
+
+     ```jsx
+     <h1 onClick={this.changeWeather}>Today's weather is {this.state.isHot ? 'hot' : 'cool'}.</h1>
+     ```
+
 3. 状态数据不能直接修改或更新，必须使用`set.state()`
 
    ```jsx
@@ -211,7 +246,13 @@ Function Component没有this，没有实例化，没有这三大核心
 
    
 
-**Props**
+#### **Props**
+
+**定义**: `props` 是组件的“外部数据”，由父组件传递给子组件。
+
+**作用**: `props` 用来让组件接收外部的数据，组件不能直接修改这些数据，只能读取和使用。
+
+**特点**: `props` 是不可变的，组件内部不能改变它的值。
 
 1. 关于`...`展开运算符
 
@@ -253,6 +294,8 @@ const result = ...user; // SyntaxError: Unexpected token ...
 ```
 
 ```jsx
+// Example of 	propTypes: define prop types
+//							defaultProps: set default value
 Person.propTypes = {
   name: PropTypes.string.isRequired,
   age: PropTypes.number,
@@ -263,18 +306,118 @@ Person.defaultProps = {
   age: 0,
   gender: "N/A"
 };
+
+/*
+1.如果是类式组件的话，和 static 搭配使用，可以写在 class component 里面。
+2.函数式组件是能写在外面。
+*/
 ```
 
 
 
-3. 
+3. 函数组件使用props
 
-   - props中的属性是read-only
+```jsx
+function Person(props) {
+    const {name, age, gender} = props;
+    return (
+        <>
+            <ul>
+                <li>Name: {name}</li>
+                <li>Age: {age}</li>
+                <li>Gender: {gender}</li>
+            </ul>
+        </>
+    )
+}
+```
 
-     ```jsx
-     //Error
-     this.props.name = "jack";
-     ```
 
-     
+
+#### refs 与事件处理
+
+1. React refs 的使用，有 createRef() 和 回调形式 两种方法使用 ref，字符串形式不被推荐使用
+
+```jsx
+class MyRefComponent extends React.Component {
+  //1.createRef() 调用后返回一个容器，可以用于储存被 ref 所标识的节点，该容器“专人专用”。
+  input1 = React.createRef();
+  input2 = React.createRef();
+  //2.使用 .current 来获取真实 DOM 元素。
+  Display1 = () => {
+    const input1 = this.input1.current;     //获取真实DOM但不使用Doument.getElementBy...方法
+                                            //.current 指向的是你所引用的实际 DOM 元素。
+    alert(input1.value);
+  }
+  Display2 = () => {
+    const input2 = this.input2.current;
+    alert(input2.value);
+  }
+  render() {
+    return (
+      <>
+      <input ref={this.input1} placeholder="Click button alert input" type="text" />
+      <button onClick={this.Display1}>Click me to display data on the left </button>
+      <input ref={this.input2} onBlur={this.Display2} placeholder="Alter data when blur"/>
+      </>
+    )
+  }
+}
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <>
+  <MyRefComponent />
+  </>
+);
+
+/*
+1.createRef() 调用后返回一个容器，可以用于储存被 ref 所标识的节点，该容器“专人专用”。
+2.使用 this.<REFNAME>.current 来获取真实 DOM 元素。
+3.标签中添加属性 ref={this.<REFNAME>}。
+*/
+```
+
+2. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

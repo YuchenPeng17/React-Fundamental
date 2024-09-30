@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <!-- Import React Core Library -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Import React-DOM for DOM operation -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Import babel for transfering jsx to js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Import prop-types for prop type checking -->
+    <script src="https://unpkg.com/prop-types/prop-types.js"></script>
+</head>
+
+<body>
+    <!-- Prepare a container -->
+    <div id="root"></div>
+    <!-- Start Here with text/babel -->
+    <script type="text/babel">
+        //1.Define Funciton Component
+        function Person(props) {
+            const { name, age, gender } = props;
+            return (
+                <>
+                    <ul>
+                        <li>Name: {name}</li>
+                        <li>Age: {age}</li>
+                        <li>Gender: {gender}</li>
+                    </ul>
+                </>
+            )
+        }
+        Person.propTypes = {
+            name: PropTypes.string.isRequired,
+            age: PropTypes.number,
+            gender: PropTypes.string,
+        }
+        Person.defaultProps = {
+            age: 0,
+            gender: "N/A"
+        };
+        //2.Render class component to page
+        // const Person1 = { name: "Yovan", age: 23, gender: "male" };
+        const Person1 = { name: "Yovan"};
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            <>
+                <Person {...Person1} />
+            </>
+        );
+
+    </script>
+</body>
+
+</html>
