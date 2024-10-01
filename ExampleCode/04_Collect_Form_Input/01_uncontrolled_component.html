@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <!-- Import React Core Library -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Import React-DOM for DOM operation -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Import babel for transfering jsx to js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <!-- Prepare a container -->
+    <div id="root"></div>
+    <!-- Start Here with text/babel -->
+    <script type="text/babel">
+
+        class UncontrolledComponent extends React.Component {
+            username = React.createRef();
+            password = React.createRef();
+            handleSubmit = () => {
+                event.preventDefault();
+                alert(`Username: ${this.username.current.value}, Password: ${this.password.current.value}`)
+            }
+            render() {
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        Username: <input ref={this.username} name="username" type="text" />
+                        Password: <input ref={this.password} name="password" type="text" />
+                        <button type="submit" >Submit</button>
+                    </form>
+                )
+            }
+        }
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<UncontrolledComponent />);
+
+    </script>
+</body>
+
+</html>

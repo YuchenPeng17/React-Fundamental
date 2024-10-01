@@ -22,6 +22,8 @@ mdn: https://developer.mozilla.org/en-US/
 
 
 
+## 章节一：React面向组件编程
+
 ### 基础知识
 
 #### **React的四个拓展包**
@@ -334,7 +336,9 @@ function Person(props) {
 
 
 
-#### refs 与事件处理
+#### Refs 与事件处理
+
+##### refs
 
 1. React refs 的使用，有 createRef() 和 回调形式 两种方法使用 ref，字符串形式不被推荐使用
 
@@ -377,15 +381,172 @@ root.render(
 */
 ```
 
-2. 
+- `ref` 请勿过度使用
 
 
 
+##### event.target事件处理
+
+2. 事件处理
+
+1. 通过 `onXxx` 属性指定事件处理函数（注意大小写）
+
+   - React 使用的是自定义合成事件，而不是使用原生的 DOM 事件 —— 更好的兼容性
+   - React中的事件是通过事件委托方式处理的，委托给组件最外层的元素 —— 高效
+     - React 通过事件委托将事件绑定到根元素，当子元素触发事件时，事件冒泡到根元素，由根元素根据 `event.target` 确定并执行对应的事件处理函数。
+
+2. 通过 `event.target` 得到发生事件的 DOM 元素对象
+
+   - 发生事件的元素正好是我要操作的元素，就可以省略ref
+
+   ```jsx
+   class MyEventComponent extends React.Component {
+     Display = (event) => {
+       alert(event.target.value);
+     }
+     render() {
+         return (
+           <>
+           <input onBlur={this.Display} placeholder="Alter data when blur" />
+           </>
+         )
+     }
+   }
+   
+   /*
+   1.event 作为参数传进箭头函数
+   */
+   ```
 
 
 
+### 收集表单数据
+
+#### 非受控组件
+
+理解：在 **非受控组件** 中，表单元素的值由 DOM 自己管理，React 不直接控制表单数据。可以使用 `ref` 获取表单的值，而不是通过 React 的 `state` 来控制输入。
+
+In an **uncontrolled component**, the form elements store their own values in the DOM, and React doesn’t manage the form data. 
+
+- 非受控组件：输入类 DOM，值现用现取
+
+```jsx
+class UncontrolledComponent extends React.Component {
+  username = React.createRef();
+  password = React.createRef();
+  handleSubmit = () => {
+    event.preventDefault();
+    alert(`Username: ${this.username.current.value}, Password: ${this.password.current.value}`)
+  }
+  render() {
+      return (
+      <form onSubmit={this.handleSubmit}>
+          Username: <input ref={this.username} name="username" type="text" />
+          Password: <input ref={this.password} name="password" type="text" />
+          <button type="submit" >Submit</button>
+      </form>
+      )
+  }
+}
+```
+
+`event.preventDefault()` : **prevent the default behavior** of an event from occurring.
 
 
+
+#### 受控组件
+
+理解：**受控组件**指的是表单元素（如输入框、文本区域等）由组件的 **state**（状态）控制。
+
+A **controlled component** is when the form elements (like input, textarea, etc.) are **controlled by the component's state**.
+
+- 输入类的 DOM 随着值的输入把值维护到状态 state 里面去，用时直接从状态取出来
+
+- 一个 `ref` 都没用，在非受控组件，每一个输入项就需要一个 `ref`。
+
+```jsx
+class ControlledComponent extends React.Component {
+  //1.使用state现定义state
+  state = {
+      username: '',
+      password: ''
+  }
+  //2.保存新的值到状态中
+  handleUsername = (event) => {
+      this.setState({ username: event.target.value })
+  }
+  //2.保存新的值到状态中
+  handlePassword = (event) => {
+      this.setState({ password: event.target.value })
+  }
+  //
+  handleSubmit = (event) => {
+      event.preventDefault();
+      const { username, password } = this.state;
+      alert(`Username: ${username}, Password: ${password}`)
+  }
+  //3.随着输入，把输入值维护到状态中去
+  render() {
+      return (
+          <form onSubmit={this.handleSubmit}>
+              Username: <input onChange={this.handleUsername} name="username" type="text" />
+              Password: <input onChange={this.handlePassword} name="password" type="text" />
+              <button type="submit" >Submit</button>
+          </form>
+      )
+  }
+}
+```
+
+
+
+#### 高阶函数和函数柯里化
+
+- 必须把函数丢给事件处理属性
+
+**高阶函数**
+
+理解：高阶函数是指**可以接收其他函数作为参数，或者返回一个函数作为结果的函数**
+
+```javascript
+// 一个高阶函数，接收一个函数作为参数
+function higherOrderFunction(fn) {
+    return function() {
+        console.log('Before executing the function');
+        fn();  // 执行传入的函数
+        console.log('After executing the function');
+    };
+}
+
+function sayHello() {
+    console.log('Hello, World!');
+}
+
+const wrappedFunction = higherOrderFunction(sayHello);
+wrappedFunction(); 
+```
+
+
+
+**函数柯里化**
+
+函数柯里化是指**将一个接受多个参数的函数转换为一系列接受单个参数的函数**。柯里化的函数不会立即执行，它会返回一个函数链，直到所有参数都传递给函数时才会执行
+
+```javascript
+// 一个简单的柯里化函数示例
+function add(a) {
+    return function(b) {
+        return a + b;
+    };
+}
+const addFive = add(5);  // 返回一个函数，已经接收了第一个参数5
+console.log(addFive(3));  // 输出 8
+console.log(add(2)(3));   // 输出 5
+
+/*
+解释：add 函数通过柯里化的方式将原来接受两个参数的函数拆分为两个函数。第一次调用时，传入第一个参数并返回一个新的函数。第二次调用时，传入第二个参数并计算结果。
+*/
+```
 
 
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <!-- Import React Core Library -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Import React-DOM for DOM operation -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Import babel for transfering jsx to js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <!-- Prepare a container -->
+    <div id="root"></div>
+    <!-- Start Here with text/babel -->
+    <script type="text/babel">
+        class ControlledComponent extends React.Component {
+            //1.使用state现定义state
+            state = {
+                username: '',
+                password: ''
+            }
+            //2.保存新的值到状态中
+            handleUsername = (event) => {
+                this.setState({ username: event.target.value })
+            }
+            //2.保存新的值到状态中
+            handlePassword = (event) => {
+                this.setState({ password: event.target.value })
+            }
+            //
+            handleSubmit = () => {
+                event.preventDefault();
+                const { username, password } = this.state;
+                alert(`Username: ${username}, Password: ${password}`)
+            }
+            //3.随着输入，把输入值维护到状态中去
+            render() {
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        Username: <input onChange={this.handleUsername} name="username" type="text" />
+                        Password: <input onChange={this.handlePassword} name="password" type="text" />
+                        <button type="submit" >Submit</button>
+                    </form>
+                )
+            }
+        }
+        
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<ControlledComponent />);
+
+    </script>
+</body>
+
+</html>
