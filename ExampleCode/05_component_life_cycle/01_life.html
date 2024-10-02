@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <!-- Import React Core Library -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Import React-DOM for DOM operation -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Import babel for transfering jsx to js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <!-- Prepare a container -->
+    <div id="root"></div>
+    <!-- Start Here with text/babel -->
+    <script type="text/babel">
+        // Step1: Create Class Component
+        class Life extends React.Component {
+            //2.设置opacity
+            state = { opacity: 1 }
+            //3.设置Timer
+            //componentDidMount回调时间：组件挂载完毕
+            componentDidMount() {
+                this.timer = setInterval(() => {
+                    let { opacity } = this.state;
+                    opacity = opacity - 0.1;
+                    if (opacity <= 0) { opacity = 1 };
+                    this.setState({ opacity });
+                }, 200)
+            }
+
+            //4.卸载组件
+            delete = () => {
+                //过时：ReactDOM.unmountComponentAtNode(document.getElementById('root'));
+                root.unmount();
+            }
+
+            //5.关闭定时器
+            //componentWilUnmount回调时间：组件将要卸载
+            componentWillUnmount() {
+                clearInterval(this.timer);
+            }
+
+            //1.定义样式
+            //render回调时间：组件初始化渲染，状态更新之后
+            render() {
+                return (
+                    <>
+                        <h1 style={{ opacity: this.state.opacity }}>Opacity is decreasing!!!</h1>
+                        <button onClick={this.delete}>Click me to delete everything</button>
+                    </>
+                );
+            }
+        }
+
+        // Step2: Render Component
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<Life />);
+
+    </script>
+</body>
+
+</html>

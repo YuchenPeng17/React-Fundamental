@@ -550,19 +550,174 @@ console.log(add(2)(3));   // 输出 5
 
 
 
+### 组件生命周期
+
+#### 基础
+
+React 组件的生命周期分为三个主要阶段：
+
+**挂载阶段（Mounting）**
+
+这是组件第一次被渲染到页面时的阶段。以下是挂载阶段中的主要生命周期方法：
+
+**`render()`**：组件初始化渲染，状态更新之后。
+
+**`componentDidMount()`**：组件第一次渲染或挂载完成后调用，可以在这里发起网络请求或与 DOM 进行交互。
 
 
 
+**更新阶段（Updating）**
+
+组件的 props 或 state 发生变化时，会进入更新阶段。以下是更新阶段中的主要生命周期方法：
+
+**`render()`**：根据新的状态或 props 重新渲染组件。
 
 
 
+**卸载阶段（Unmounting）**
+
+当组件从 DOM 中移除时，会进入卸载阶段。以下是卸载阶段中的主要生命周期方法：
+
+**`componentWillUnmount()`**：组件即将被卸载和销毁之前调用，可以在这里清理定时器、取消网络请求或清理订阅等。
+
+```jsx
+<script type="text/babel">
+    // Step1: Create Class Component
+    class Life extends React.Component {
+        //2.设置opacity
+        state = { opacity: 1 }
+        //3.设置Timer
+        //componentDidMount回调时间：组件挂载完毕
+        componentDidMount() {
+            this.timer = setInterval(() => {
+                let { opacity } = this.state;
+                opacity = opacity - 0.1;
+                if (opacity <= 0) { opacity = 1 };
+                this.setState({ opacity });
+            }, 200)
+        }
+
+        //4.卸载组件
+        delete = () => {
+            //过时ReactDOM.unmountComponentAtNode(document.getElementById('root'));
+            root.unmount();
+        }
+
+        //5.关闭定时器
+        //componentWilUnmount回调时间：组件将要卸载
+        componentWillUnmount() {
+            clearInterval(this.timer);
+        }
+
+        //1.定义样式
+        //render回调时间：组件初始化渲染，状态更新之后
+        render() {
+            return (
+                <>
+                    <h1 style={{ opacity: this.state.opacity }}>Opacity is decreasing!!!</h1>
+                    <button onClick={this.delete}>Click me to delete everything</button>
+                </>
+            );
+        }
+    }
+
+    // Step2: Render Component
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(<Life />);
+
+</script>
+```
 
 
 
+**Style中的内联写法**
+
+```jsx
+style={{ color: 'red' }}
+```
+
+- 最外层的大括号：表示插入 JavaScript 表达式。
+
+- 里面表示CSS 样式对象，其中的键值对表示 CSS 属性和对应的值，格式 `{key: value}`。
+
+- 事件处理函数用 `{this.func}`：传递函数引用，不加 `()`，否则会将函数返回值赋给事件处理函数。
 
 
 
+**计时器**
 
+- `setInterval()` 是 JavaScript 的内置函数，用于按照指定的时间间隔，重复执行 一个函数或代码片段，直到被手动停止（通过 `clearInterval()`）。
+
+```javascript
+setInterval(function, delay);
+/*
+1.function：要执行的函数或代码片段。
+2.delay：以毫秒为单位的时间间隔（1000 毫秒 = 1 秒）。
+*/
+```
+
+```javascript
+const intervalId = setInterval(() => {
+  console.log("Repeating every second");
+}, 1000);
+
+// 停止 setInterval
+clearInterval(intervalId);
+
+/*
+1.保存 setInterval() 返回的 ID 以便进行清除。
+2.使用 clearInterval(<ID>) 来停止 setInterval()。
+*/
+```
+
+
+
+**3种 setState 的场景**
+
+1. `this.setState({ opacity })`
+
+   - 这种写法等同于 `this.setState({ opacity: opacity })`。
+
+   - 使用场景：当对象的键和值名称相同时的简写方式。
+   - ES6 的对象属性简写
+
+2. `this.setState({ [inputType]: event.target.value }`
+
+   - 计算属性名（ES6 特性），让状态键名可以动态计算。
+   - 方括号表示，`inputType` 是一个变量，它的值决定了哪个状态属性会被更新。
+   - 使用场景：当变量作为键名
+
+3. `this.setState({ name: newName })`
+
+   - 使用场景：明确更新特定属性（直接指定键名）
+
+
+
+#### 生命周期函数顺序
+
+```
+初始化
+1. constructor
+2. UNSAFE_componentWillMount
+3. render
+4. componentDidMount
+5. componentWillUnmount
+
+更新线路1: setState
+1. shouldComponentUpdate	返回true/false的阀门
+2. componentWillUpdate
+3. render
+4. componentDidUpdate
+
+更新线路2: forceUpdate	不想对状态作出修改，就是更新组件，绕过阀门
+1. componentWillUpdate
+2. render
+3. componentDidUpdate
+
+改状态，不更新页面，阀门关闭
+没有改状态，就想更新一下，用forceUpdate()
+```
 
 
 
