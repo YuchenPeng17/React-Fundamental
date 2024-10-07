@@ -4,7 +4,7 @@
 
 mdn: https://developer.mozilla.org/en-US/
 
-
+cdn库：https://bootcdn.cn
 
 ### React Features / React 的特点：
 
@@ -697,37 +697,54 @@ clearInterval(intervalId);
 #### 生命周期函数顺序
 
 ```
-初始化
-1. constructor
-2. UNSAFE_componentWillMount
-3. render
-4. componentDidMount
-5. componentWillUnmount
+初始化阶段
+1. constructor()
+2. componentWillMount() / UNSAFE_componentWillMount()
+3. render()
+4. componentDidMount()				====> 常用！做一些初始化的事情，例如开启定时器，发送网络请求，请阅消息等
 
-更新线路1: setState
-1. shouldComponentUpdate	返回true/false的阀门
-2. componentWillUpdate
-3. render
-4. componentDidUpdate
+更新阶段：由组件内部 this.setState() 或父组件 render 触发
+1. componentWillReceiveProps() / UNSAFE_componentWillReceiveProps() 父组件 render 触发
+2. shouldComponentUpdate() 返回 true/false 决定组件是否更新的阀门
+3. componentWillUpdate() / UNSAFE_componentWillUpdate()
+4. render()
+5. componentDidUpdate(preProps, preState, snapshotValue)
 
-更新线路2: forceUpdate	不想对状态作出修改，就是更新组件，绕过阀门
-1. componentWillUpdate
-2. render
-3. componentDidUpdate
-
-改状态，不更新页面，阀门关闭
-没有改状态，就想更新一下，用forceUpdate()
+卸载阶段：由 ReactDOM.createRoot() 创建的 root 使用 unmount() 触发
+1. componentWillUnmount()			====> 常用！做一些收尾的事情，关闭定时器，取消订阅消息
 ```
 
 
 
+新
 
+```jsx
+static getDerivedStateFromProps(props, state){...}
+/*
+此方法适用于 少数罕见用例，其中 state 取决于 props 随着时间的推移的变化。
+*/
 
+getSnapshotBeforeUpdate(prevProps, prevState)
+/*
+滚动条，scrollHeight 和 scrollTop
+*/
+                                              
+初始化阶段
+1. constructor()
+2. getDerivedStateFromProps
+3. render()
+4. componentDidMount()				====> 常用！做一些初始化的事情，例如开启定时器，发送网络请求，请阅消息等
 
+更新阶段：由组件内部 this.setState() 或父组件 render 触发
+1. getDerivedStateFromProps
+2. shouldComponentUpdate() 返回 true/false 决定组件是否更新的阀门
+3. render()
+4. getSnapshotBeforeUpdate()
+5. componentDidUpdate(preProps, preState, snapshotValue)
 
-
-
-
+卸载阶段：由 ReactDOM.createRoot() 创建的 root 使用 unmount() 触发
+1. componentWillUnmount()			====> 常用！做一些收尾的事情，关闭定时器，取消订阅消息
+```
 
 
 

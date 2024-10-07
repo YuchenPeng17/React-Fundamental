@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <!-- Import React Core Library -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Import React-DOM for DOM operation -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Import babel for transfering jsx to js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <!-- Prepare a container -->
+    <div id="root"></div>
+    <!-- Start Here with text/babel -->
+    <script type="text/babel">
+        class ComponentA extends React.Component {
+        state = {
+            car: "Audi"
+        }
+        changeCar = () => {
+            this.setState({ car: "BMW" });
+        }
+
+        render() {
+            return (
+                <div>
+                    <div>This is component A: </div>
+                    <button onClick={this.changeCar} >Switch Car</button>
+                    <ComponentB car={this.state.car} />
+                </div>
+            )
+        }
+        }
+
+        class ComponentB extends React.Component {
+            componentDidMount(){
+                console.log("componentB: componentDidMount");
+            }
+            UNSAFE_componentWillReceiveProps(){
+                console.log("componentB: UNSAFE_componentWillReceiveProps");
+            }
+            render() {
+                return (
+                    <div>
+                        <div>This is component B: </div>
+                        <div>Car is: {this.props.car}</div>
+                    </div>
+                )
+            }
+        }
+
+
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<ComponentA />);
+
+    </script>
+</body>
+
+</html>

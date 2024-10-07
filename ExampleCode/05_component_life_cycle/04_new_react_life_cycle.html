@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <!-- Import React Core Library -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- Import React-DOM for DOM operation -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Import babel for transfering jsx to js -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <!-- Prepare a container -->
+    <div id="root"></div>
+    <!-- Start Here with text/babel -->
+    <script type="text/babel">
+        // Step1: Create Class Component
+        class Count extends React.Component {
+            //2.Define state
+            constructor(props){
+                //call super
+                super(props);
+                this.state = {count: 0};
+                console.log("Count: constructor()");
+            }
+
+            //3.Define Functions
+            addOne = () => {
+                const {count} = this.state;
+                this.setState({count: count+1});
+            }
+
+            // My functions 
+            //卸载组件
+            delete = () => {
+                root.unmount();
+            }
+
+            // 强制更新
+            force = () => {
+                this.forceUpdate();
+            }
+
+            //4.Lifecycle functions
+            //即将挂载
+            UNSAFE_componentWillMount(){
+                console.log("Count: componentWillMount()");
+            }
+            
+            //挂载完毕
+            componentDidMount(){
+                console.log("Count: componentDidMount()");
+            }
+
+            //即将卸载
+            componentWillUnmount(){
+                console.log("Count: componentWillUnmount()");
+            }
+
+            //组件是否更新
+            shouldComponentUpdate(){
+                console.log("Count: shouldComponentUpdate()");
+                return false;
+            }
+
+            //组件即将更新
+            componentWillUpdate(){
+                console.log("Count: componentWillUpdate()");
+            }
+
+            //组件更新完毕
+            componentDidUpdate(){
+                console.log("Count: componentDidUpdate()");
+            }
+
+            //1.Define layout
+            render(){
+                console.log("Count: render()");
+                const {count} = this.state;
+                return(
+                    <>
+                        <h1>Current Count is: {count}</h1>
+                        <button onClick={this.addOne}>Click me to add 1</button>
+                        <button onClick={this.delete}>Click me to delete</button>
+                        <button onClick={this.force}>Click me to force update</button>
+                    </>
+                )
+            }
+        }
+        // Step2: Render Component
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<Count />);
+
+    </script>
+</body>
+
+</html>
