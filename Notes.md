@@ -748,6 +748,76 @@ getSnapshotBeforeUpdate(prevProps, prevState)
 
 
 
+## 章节二：Reacrt应用基于React脚手架
+
+```
+npm install -g create-react-app
+create-react-app <PROJECT_NAME>
+```
+
+- 模块化，组件话，工程化
+
+```
+yarn start
+yarn build			把写完的项目进行最终打包，整个应用写完了
+yarn eject			暴露 webpack 配置相关文件，不可逆
+```
+
+
+
+- Vue, React ---> Single Page Application (SPA)
+- 网页 / 客户端 开发
+  - Android Java
+  - IOS Swift
+  - 网页 HTML 使用加壳技术 可以变成安卓/IOS应用
+
+
+
+- index.html 中 root div 中只放入一个组件 app.js 的函数组件
+
+  - src/index.js ---> 入口文件
+    - 导入了 app.js 中的 app 组件
+    - 获取了 index.html 中的 root div
+    - 把 app 组件 render 到了 root div 上
+
+- 重要文件
+
+  - index\.html ----- 主页面
+  - App.js ----- App组件
+  - index.js ----- 入口文件
+
+- 区分业务逻辑的js和jsx
+
+  - js 业务功能
+  - jsx 组件 & 文件名首字母大写
+
+  - js, jsx在 react 引入时可以不写后缀
+
+- /components/<COMPONENT_NAME>/<COMPONENT_NAME>.jsx
+
+  - 这个写法在引入时的引入语句会很繁杂
+
+  - 如果在Component文件夹下使用 index.jsx 的话可以省略一部分如
+
+    ```
+    FROM
+    import Welcome from './components/Welcome/Welcome'
+    TO
+    import Welcome from './components/Welcome'
+    ```
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
