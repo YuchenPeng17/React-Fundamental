@@ -806,7 +806,21 @@ yarn eject			暴露 webpack 配置相关文件，不可逆
     import Welcome from './components/Welcome'
     ```
 
-    
+
+
+
+**React VS Code 插件**
+
+ES7+ React/Redux/React-Native snippets
+
+```
+rcc - React Class Component
+rfc - React Function Component
+```
+
+
+
+**组件编码流程**
 
 
 
@@ -814,11 +828,11 @@ yarn eject			暴露 webpack 配置相关文件，不可逆
 
 
 
+第三方已经写好的包在最上面
 
+自己写的包往下写
 
-
-
-
+样式在最后
 
 
 
