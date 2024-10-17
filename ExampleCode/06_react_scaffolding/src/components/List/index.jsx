@@ -7,8 +7,6 @@ export default class List extends Component {
 
     render() {
         const { todos } = this.props;
-        console.log("List");
-        console.log(todos);
         return (
             <ul className='todo-main'>
                 {

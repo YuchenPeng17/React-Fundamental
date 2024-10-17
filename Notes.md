@@ -838,3 +838,6 @@ rfc - React Function Component
 
 
 
+父组件与子组件通信 用Props传递
+
+子组件与父组件通信 父组件把一个函数作为Props传递给子组件 子组件使用传递过来的函数
