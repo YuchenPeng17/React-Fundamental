@@ -6,7 +6,15 @@ mdn: https://developer.mozilla.org/en-US/
 
 cdn库：https://bootcdn.cn
 
-### React Features / React 的特点：
+官网
+
+1. 英文官网: https://reactjs.org/
+
+2. 中文官网: https://react.docschina.org/
+
+
+
+### React Intro / React 介绍：
 
 **React**: An open-source JavaScript library for rendering data into HTML views, primarily used for building user interfaces. It enables the creation of reusable UI components and efficiently updates the view when data changes.
 
@@ -29,11 +37,11 @@ cdn库：https://bootcdn.cn
 #### **React的四个拓展包**
 
 ```html
-<!-- Import React Core Library -->
+<!-- Import React Core Library React核心库 -->
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<!-- Import React-DOM for DOM operation -->
+<!-- Import React-DOM for DOM operation 提供操作DOM的react扩展库 -->
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<!-- Import babel for transfering jsx to js -->
+<!-- Import babel for transfering jsx to js 解析JSX语法代码转为JS代码的库 -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <!-- Import prop-types for prop type checking -->
 <script src="https://unpkg.com/prop-types/prop-types.js"></script>
@@ -97,7 +105,7 @@ cdn库：https://bootcdn.cn
 #### **模块**
 
 - 理解：向外提供特定功能的js程序，一般就是一个js文件。
-- 为什么要拆成膜快：随着业务逻辑增加，代码越来越多且复杂。
+- 为什么要拆成模快：随着业务逻辑增加，代码越来越多且复杂。
 - 作用：复用js，简化js的编写，提高js运行效率。
 - 模块化：应用的js都以模块来编写，称之为模块化的应用
 
@@ -243,10 +251,19 @@ Function Component没有this，没有实例化，没有这三大核心
 3. 状态数据不能直接修改或更新，必须使用`set.state()`
 
    ```jsx
+   /* 定义与使用 */
+   state = {
+     count: 0
+   };
+   increment = () => {
+     this.setState({ count: this.state.count + 1 });
+   };
+   
    this.setState({isHot:!this.state.isHot});
    ```
-
    
+
+
 
 #### **Props**
 
@@ -312,7 +329,18 @@ Person.defaultProps = {
 /*
 1.如果是类式组件的话，和 static 搭配使用，可以写在 class component 里面。
 2.函数式组件是能写在外面。
+3.类式组件，注意PropTypes 'prop-types' propTypes的区别
 */
+
+import PropTypes from 'prop-types'
+export default class List extends Component {
+  static propTypes = {
+    todos: PropTypes.array.isRequired,
+    updatetodos: PropTypes.func.isRequired,
+    deletetodo: PropTypes.func.isRequired
+  }
+}
+
 ```
 
 
@@ -750,12 +778,13 @@ getSnapshotBeforeUpdate(prevProps, prevState)
 
 ## 章节二：Reacrt应用基于React脚手架
 
+**创建项目并启动**
+
 ```
 npm install -g create-react-app
 create-react-app <PROJECT_NAME>
+npm start
 ```
-
-- 模块化，组件话，工程化
 
 ```
 yarn start
@@ -763,15 +792,7 @@ yarn build			把写完的项目进行最终打包，整个应用写完了
 yarn eject			暴露 webpack 配置相关文件，不可逆
 ```
 
-
-
-- Vue, React ---> Single Page Application (SPA)
-- 网页 / 客户端 开发
-  - Android Java
-  - IOS Swift
-  - 网页 HTML 使用加壳技术 可以变成安卓/IOS应用
-
-
+- 模块化，组件化，工程化
 
 - index.html 中 root div 中只放入一个组件 app.js 的函数组件
 
@@ -780,7 +801,7 @@ yarn eject			暴露 webpack 配置相关文件，不可逆
     - 获取了 index.html 中的 root div
     - 把 app 组件 render 到了 root div 上
 
-- 重要文件
+- **重要文件**
 
   - index\.html ----- 主页面
   - App.js ----- App组件
@@ -806,6 +827,12 @@ yarn eject			暴露 webpack 配置相关文件，不可逆
     import Welcome from './components/Welcome'
     ```
 
+- Vue, React ---> Single Page Application (SPA)
+- 网页 / 客户端 开发
+  - Android Java
+  - IOS Swift
+  - 网页 HTML 使用加壳技术 可以变成安卓/IOS应用
+
 
 
 
@@ -822,11 +849,18 @@ rfc - React Function Component
 
 **组件编码流程**
 
+1. 拆分组件: 拆分界面,抽取组件
+2. 实现静态组件: 使用组件实现静态页面效果
+3. 实现动态组件
+   1. 动态显示初始化数据
+      1. 数据类型
+      2. 数据名称
+      3. 保存在哪个组件?
+   2. 交互(从绑定事件监听开始)
 
 
 
-
-
+**文件中导入时**
 
 第三方已经写好的包在最上面
 
@@ -836,18 +870,119 @@ rfc - React Function Component
 
 
 
+**ToDo List案例知识点**
+
+1. 拆分组件，实现静态组件，注意：className, style的写法
+2. 动态初始化列表，如何确定将数据放在哪个组件的state中？
+   1. 某个组件使用：放在其自身的state中
+   2. 某些组件使用：放在他们共同的父组件state中（官方称此操作：状态提升）
+3. 父子组件通信
+   1. 【父组件】给【子组件】传递数据：用Props传递
+   2. 【子组件】给【父组件】传递数据：父组件把一个函数作为Props传递给子组件 子组件使用传递过来的函数
+   3. 祖孙关系的话就通过当中的父组件多传一层
+4. 注意defaultChecked和checked的区别，类似的还有：defaultValue 和 value
+5. 状态在哪里（哪个组件里面），操作状态的方法就在哪里（可以传出去）
+6. 在jsx的html中写函数如果传参注意写高阶函数
 
 
-父组件与子组件通信 用Props传递
 
-子组件与父组件通信 父组件把一个函数作为Props传递给子组件 子组件使用传递过来的函数
+## 章节三：React ajax
 
-- 祖孙关系的话就通过当中的父多传一层
+安装
+
+```
+yarn add axios
+```
+
+使用
+
+```jsx
+import axios from 'axios'
+handleClick = () => {
+  axios.get('http://localhost:3000/students').then(
+      response => {
+          console.log('Success', response.data);
+      },
+      error => {
+          console.log('Fail', error);
+      }
+  )
+}
+
+/*
+1.数据服务器在 3001 端口
+2.自身在 3000 端口
+*/
+```
+
+在`package.json`中配置proxy代理服务器，跨域请求
+
+```json
+"proxy": "http://localhost:3001"
+```
+
+在 `setupProxy.js` 文件中，使用` http-proxy-middleware `设置代理服务器
+
+```js
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function (app) {
+    app.use(
+        '/api1',		//api1是需要转发的请求(所有带有/api1前缀的请求都会转发给3050)
+        createProxyMiddleware({
+            target: 'http://localhost:3050',		//配置转发目标地址(能返回数据的服务器地址)
+            changeOrigin: true,									//控制服务器接收到的请求头中host字段的值
+       /*
+      	changeOrigin设置为true时，服务器收到的请求头中的host为：localhost:3050 （自身）
+      	changeOrigin设置为false时，服务器收到的请求头中的host为：localhost:3000
+      	changeOrigin默认值为false，但我们一般将changeOrigin值设为true
+      */
+            pathRewrite: { '^/api1': '' }				 //去除请求前缀，保证交给后台服务器的是正常请求地址(必须配置)
+        })
+    );
+    app.use(
+        '/api2',
+        createProxyMiddleware({
+            target: 'http://localhost:3051',
+            changeOrigin: true,
+            pathRewrite: { '^/api2': '' }
+        })
+    );
+};
+```
 
 
 
-状态在哪里（哪个组件里面），操作状态的方法就在哪里（可以传出去）
+**为什么直接跨域请求不行？**
+
+跨域请求的问题是由**同源策略**（Same-Origin Policy）导致的，这是浏览器的一种安全机制。根据同源策略，浏览器只允许从同一个域（包括协议、域名和端口）的网页发起请求。如果你从一个不同的端口或域名（即使是同一个服务器的不同端口）发起请求，就会被视为跨域请求，浏览器会阻止它，除非目标服务器允许跨域访问。
+
+假设：
+
+- 前端应用运行在 `http://localhost:3000`。
+- 后端服务运行在 `http://localhost:3050`。
+
+即使两个服务都在同一个服务器上，但因为端口不同，它们被浏览器认为是**不同的源**，因此跨域请求会被阻止。
 
 
 
-在jsx的html中写函数如果传参注意写高阶函数
+
+
+
+
+es6 cjs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
