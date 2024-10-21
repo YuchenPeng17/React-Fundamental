@@ -966,6 +966,32 @@ module.exports = function (app) {
 
 
 
+### Case2: github search
+
+```jsx
+/* 更简便的更新 state 方法 */
+state = {
+  usersList: [],
+  isFirst: true,
+  isLoading: false,
+  error: ''
+};
+
+updateState = (stateObj) => {
+  this.setState(stateObj);
+}
+
+/* 传入 props */
+<Search updateState = {this.updateState}/>
+<List {...this.state} usersList = {this.state.usersList} />
+
+/* 使用更新函数 */
+this.props.updateState({isFirst: false, isLoading: true});    
+this.props.updateState({isLoading: false, usersList: response.data.items});
+```
+
+
+
 
 
 
