@@ -990,21 +990,32 @@ this.props.updateState({isFirst: false, isLoading: true});
 this.props.updateState({isLoading: false, usersList: response.data.items});
 ```
 
+- 设计状态时要考虑全面，例如带有网络请求的组件，要考虑不同时期（请求失败、初次加载、加载中）的效果。
+- ES6小知识点：结构赋值 + 重命名
+
+```
+let obj = {a: {b: 1}}
+const {a} = obj										// Traditional
+const {a: {b}} = obj							// Continuious
+const {a: {b: value}} = obj				// Continuious + Rename
+```
+
+- 消息订阅与发布机制
+  1. 先订阅，再发布
+  2. 适用于任何组件的通信
+  3. 记得在componentWillUnmount中取消
+
+es6
+
+cjs服务器端？
+
+promises 风格 axious
+
+jquery 回调地狱
 
 
 
-
-
-
-es6 cjs
-
-
-
-
-
-
-
-
+## 章节四：React Router路由
 
 
 
