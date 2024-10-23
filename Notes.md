@@ -1017,6 +1017,137 @@ jquery 回调地狱
 
 ## 章节四：React Router路由
 
+**基本路由使用**
+
+1. 明确界面的导航区和展示区
+
+2. 导航区的`a`标签改为`Link`标签
+
+   ```html
+   <Link to"/XXX">XXX</Link>
+   ```
+
+3. 展示区写`Route`标签进行路径匹配
+
+   ```html
+   <Route path="/XXX" component={Demo}></Route>
+   ```
+
+4. `<App>`的最外侧包裹了一个`BrowserRouter`或`<HashRouter>`
+
+**路由组件与一般组件**
+
+1. 写法不同
+
+   一般组件：`<Demo />`
+
+   路由组件：`<Route path="/Demo" component={Demo} />`
+
+2. 存放位置不同
+
+   一般组件：components
+
+   路由组件：pages
+
+3. 接收到的props不同
+
+   一般组件：不传就为空
+
+   路由组件：
+
+   ```
+   history:
+   - go: function(n)
+   - goBack: function()
+   - goForward: function()
+   - push: function(path, state)
+   - replace: function(path, state)
+   
+   location:
+   - pathname: "/home"
+   - search: ""
+   - state: undefined
+   
+   match:
+   - params: {}
+   - path: "/home"
+   - url: "/home"
+   ```
+
+**NaviLink与封装NaviLink**
+
+1. `NaviLink`可以实现路由链接的高亮，通过`activeClassName`制定样式名
+2. 标签体内容是一个特殊的标签属性
+3. 通过`this.props.children`可以获取标签体内容
+
+**Switch组件的使用**
+
+1. 通常情况下，path和component是一一对应的关系
+2. Switch包裹Route可以提高路由匹配的效率
+
+**解决多级路径刷新页面样式丢失的问题**
+
+1. public/index.html 中，引入样式时不写 ./ 写 /【常用】
+
+   使用 `/` 代表从网站的根目录开始引用文件
+
+2. public/index.html 中，引入样式时不写 ./ 写 %PUBLIC_URL%【常用】
+
+   它代表项目的公共 URL 根路径
+
+3. 使用HashRouter【不常用】
+
+**路由的严格匹配与模糊匹配**
+
+1. 默认使用模糊匹配
+
+   【输入的路径NaviLink】必须包含要【匹配的路径Route】，且顺序一致（为第一个）
+
+2. 开启严格匹配：`<Route exact={true} path="/about" component={About} />`
+
+3. 不要随便开启严格匹配，需要再开，有些时候开启可能导致无法继续匹配二级路由
+
+**Redirect组件的使用**
+
+1. 一般写在所有路由注册的最下方，当所有路由都无法匹配时，跳转到Redirect制定的路由
+
+
+
+
+
+
+
+
+
+```html
+{/* 1.编写路由链接 */}
+<MyNaviLink to="/about">About</MyNaviLink>
+<MyNaviLink to="/home">Home</MyNaviLink>
+
+{/* 2.注册路由，定义关系 */}
+<Switch>
+  <Route path="/about" component={About} />
+  <Route path="/home" component={Home} />
+  <Redirect to="/home" />
+</Switch>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
