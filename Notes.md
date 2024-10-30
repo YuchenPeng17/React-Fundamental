@@ -171,9 +171,9 @@ CN React Documentation: [React](https://react.docschina.org)
 
 ### 2.1 Basic Knowledge and Usage
 
-#### 2.1.1 React Developer Tools for debugging
+#### 2.1.1 React Developer Tools for Debugging
 
-
+<img src='Files/ReactDeveloperTools.png'  />
 
 #### **2.1.2 Function / Class Components**
 
