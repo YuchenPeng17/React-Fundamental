@@ -1,144 +1,205 @@
-# React
+# React-Fundamental
 
-### 资料区
+## Chapter1: Introduction to React 
 
-mdn: https://developer.mozilla.org/en-US/
+### 1.1 Useful Links
 
-cdn库：https://bootcdn.cn
+JavaSript Documentation: [MDN](https://developer.mozilla.org/en-US/)
 
-官网
+CN CDN Library: [Boot CDN](https://bootcdn.cn)
 
-1. 英文官网: https://reactjs.org/
+EN React Documentation: [React](https://react.dev)
 
-2. 中文官网: https://react.docschina.org/
+CN React Documentation: [React](https://react.docschina.org)
 
 
 
-### React Intro / React 介绍：
+### 1.2 React Theory
 
 **React**: An open-source JavaScript library for rendering data into HTML views, primarily used for building user interfaces. It enables the creation of reusable UI components and efficiently updates the view when data changes.
 
-**React**：一个用于将数据渲染为 HTML 视图的开源 JavaScript 库，主要用于构建用户界面。它支持创建可重用的 UI 组件，并高效更新视图以响应数据变化。
+- **Component-Based Structure & Declarative Coding**
+  - Break down a page or application into independent, reusable components, each serving a specific function and able to be developed, tested, and reused separately
+  - Define what the UI should look like at any given time, and React takes care of updating it when the data changes
+  - Increase development efficiency and component reusability
 
-1. **Component-based structure and declarative coding**: This increases development efficiency and component reusability.
-   - **采用组件化模式、声明式编码**：提高开发效率及组件复用率。
-2. **Mobile development with React Native**: React syntax can be used in React Native for mobile app development.
-   - **在 React Native 中可以使用 React 语法进行移动端开发**。
-3. **Virtual DOM and optimized Diffing algorithm**: Minimizes interactions with the real DOM to improve performance.
-   - **使用虚拟 DOM + 优秀的 Diffing 算法**，通过对比虚拟DOM，尽量减少与真实 DOM 的交互。最小化页面重绘。
-   - 不总是直接操作真实DOM
+- **Mobile Development with React Native**
+  - React syntax can be used in React Native for mobile app development.
+- **Virtual DOM & Diffing Algorithm *(Why React is Efficient)***
+  - Minimise interactions with the real DOM by comparing virtual DOM snapshots and only updating what’s necessary
+  - Reduce the expense of page re-rendering by avoiding direct manipulation of the real DOM whenever possible.
 
 
 
-## 章节一：React面向组件编程
+### 1.3 Basic Knowledge
 
-### 基础知识
-
-#### **React的四个拓展包**
+#### 1.3.1 **React JS Libraries**
 
 ```html
-<!-- Import React Core Library React核心库 -->
+<!-- Import React Core Library -->
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<!-- Import React-DOM for DOM operation 提供操作DOM的react扩展库 -->
+<!-- Import React-DOM for DOM operation -->
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<!-- Import babel for transfering jsx to js 解析JSX语法代码转为JS代码的库 -->
+<!-- Import babel for transfering jsx to js -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
 <!-- Import prop-types for prop type checking -->
 <script src="https://unpkg.com/prop-types/prop-types.js"></script>
 ```
 
 
 
-#### **JSON**
+#### 1.3.2 **JSON**
 
-- parse: 将一个 JSON 格式的字符串解析（转换）成 JavaScript 对象。
+- **parse**: Converts a JSON-formatted string into a JavaScript object.
 
   ```javascript
   const jsonString = '{"name": "Alice", "age": 25}';
   const obj = JSON.parse(jsonString);
-  // obj.name, obj.age
+  // Access properties: obj.name, obj.age
   ```
 
-- stringfy: 将一个 JavaScript 对象或值转换为 JSON 格式的字符串。
+- **stringify**: Converts a JavaScript object or value into a JSON-formatted string.
 
   ```javascript
   const obj = { name: "Alice", age: 25, isStudent: false };
   const jsonString = JSON.stringify(obj);
   console.log(jsonString); 
-  // 输出: {"name":"Alice","age":25,"isStudent":false}
+  // Output: {"name":"Alice","age":25,"isStudent":false}
   ```
 
 
 
-#### **虚拟DOM**
+#### 1.3.3 **Virtual DOM and Real DOM**
 
-- 虚拟DOM本质是一个Object类型的对象
-
-- 虚拟DOM“轻”，真实DOM“重”，虚拟DOM只有React在用，没有真实DOM的那么多属性
-- 虚拟DOM最终会被React转化为真实DOM，呈现在页面上
-
-
-
-#### **jsx语法规则**
-
-- 定义虚拟DOM时，不要写引号。
-- 标签中混入JS表达式的时候用{}。
-  - JS表达式：表达式产生一个值，可以放在任何一个需要值的地方
-    - a
-    - a+b
-    - arr.map()
-    - function test(){}
-  - JS语句（代码）
-    - if(){}
-    - for(){}
-    - switch(){}
-- 标签的类名指定不要用class，要用className。
-- 內联样式，要用style={{key:'value'}}的形式去写。
-- 只有一个根标签
-- 标签必须闭合
-- 标签首字母
-  - 若小写字母开头，则将该标签转为html中同名元素，若html中无改标签对应的同名元素，则报错。
-  - 若大写字母开头，react就去渲染对应的组建，若组件没有定义，则报错。
+- **Virtual DOM vs Real DOM**:  
+  - <u>The Virtual DOM</u> is a lightweight JavaScript object representation of the Real DOM, managed by React.
+  - <u>The Real DOM</u> directly interacts with the browser to display and update content but is slower to manipulate.
+- **Creation and Structure**:  
+  - React APIs, like `ReactDOM.createRoot`, create a Virtual DOM instance as a special JavaScript object.
+  - The Virtual DOM is simpler and <u>contains fewer properties</u> than the Real DOM, making it faster to process.
+- **Efficiency**:  
+  - The Virtual DOM is "<u>light</u>," while the Real DOM is "<u>heavy</u>" and costly to update.
+  - React uses the Virtual DOM to track changes before updating the Real DOM, reducing the workload for the browser.
+- **Developer Interaction**:  
+  - During development, we mainly work with the Virtual DOM; React automatically handles the conversion to Real DOM updates for final display.
 
 
 
-#### **模块**
+#### 1.3.4 **JSX Syntax**
 
-- 理解：向外提供特定功能的js程序，一般就是一个js文件。
-- 为什么要拆成模快：随着业务逻辑增加，代码越来越多且复杂。
-- 作用：复用js，简化js的编写，提高js运行效率。
-- 模块化：应用的js都以模块来编写，称之为模块化的应用
+- **Basic Syntax Rules**  
+  - Code starting with `<` is parsed as a tag:
+    - Standard HTML tags convert directly to corresponding HTML elements.
+    - Non-standard tags require custom parsing.
+  - Code inside `{}` is parsed as JavaScript:
+    - JS expressions within tags must be enclosed in `{}`.
+
+- **JavaScript Expressions**  
+  - Expressions produce a value and can be used wherever a value is needed, such as:
+    - `a`
+    - `a + b`
+    - `arr.map()`
+    - `function test(){}`
+
+- **JavaScript Statements (Code)**  
+  - Statements control flow but don’t produce a value, like:
+    - `if (){}`
+    - `for (){}`
+    - `switch (){}`
+
+- **Role of `babel.js`**  
+  - Browsers cannot directly parse JSX; Babel translates JSX into JavaScript for browser compatibility.
+  - When using JSX, add `type="text/babel"` to indicate Babel processing is required.
+
+- **Other JSX Guidelines**  
+  - Use `className` instead of `class` for CSS classes.
+  - Write inline styles as `style={{ key: 'value' }}`.
+  - JSX must have a single root tag.
+  - Tags must be self-closing or explicitly closed.
+
+- **Tag Naming Conventions**  
+  - **Lowercase**: Interpreted as an HTML element (e.g., `<div>`). If no matching HTML element exists, an error is thrown.
+  - **Uppercase**: Interpreted as a React component. An error occurs if the component is undefined.
 
 
 
-### **组件**
-
-- 理解：用来实现局部功能效果的代码和资源的集合（HTML/CSS/JS...）。
-- 为什么：一个界面的功能更复杂
-- 作用：复用编码，简化项目编码，提高运行效率
-- 组件化：应用是以多组件的方式实现，称之为组件化的应用
-
-
-
-#### **函数式组件**
+#### 1.3.5 Rendering Virtual DOM
 
 ```jsx
-//1.创建函数式组件
-function myComponent(){
-  return <h2>我是用函数定义的组件（适用于【简单组件】的定义）</h2>
-}
-//2.渲染组件到页面
-ReactDOM.render(<myComponent/>, document.getElementById('id'));
+<div id="root"></div>
 
-/*
-1.React解析组件标签，找到自定义函数式组件。
-2.调用该函数，将返回的虚拟DOM转换为真实DOM，随后呈现在页面中。
-*/
+<script type="text/babel">
+  class App extends React.Component {
+    render() {
+      return (
+        <div>Hello, Welcome Back!</div>
+      );
+    }
+  }
+
+  // Select the real DOM container and create a root instance for rendering
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  // Render the App component's virtual DOM into the real DOM container
+  root.render(<App />);
+</script>
 ```
 
 
 
-#### **类式组件**
+### **1.4 Modularisation vs. Componentisation**
+
+#### 1.4.1 **Modules**
+
+- **Definition**: A JavaScript program that provides specific functionality, typically a single JavaScript file.
+- **Why use modules?**: As business logic grows, code becomes larger and more complex. Breaking it into modules helps manage this complexity.
+- **Purpose**: To reuse JavaScript code, simplify code structure, and improve runtime efficiency.
+- **Modularisation**: When all JavaScript in an application is written as modules, the application is considered modular.
+
+
+
+#### 1.4.2 **Components**
+
+- **Definition**: A collection of code and resources (HTML, CSS, JS, etc.) that implements specific functionality for a specific section of a page.
+- **Why use components?**: To handle more complex functionality within a user interface.
+- **Purpose**: To enable code reuse, simplify project structure, and improve runtime efficiency.
+- **Componentisation**: When an application is built using multiple components, it is considered a component-based application.
+
+
+
+## Chapter2: Component-Oriented Programming in React
+
+### 2.1 Basic Knowledge and Usage
+
+#### 2.1.1 React Developer Tools for debugging
+
+
+
+#### **2.1.2 Function / Class Components**
+
+- Function Component
+
+```jsx
+// 1. Define a functional component
+function MyComponent() {
+  return <h2>This is a functional component (suitable for simple components)</h2>;
+}
+
+// 2. Select the root container and render the component
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<MyComponent />);
+
+/*
+Explanation:
+1. React parses the component tag and identifies it as a custom functional component.
+2. It calls the MyComponent function, converting the returned virtual DOM into real DOM elements, which are then displayed on the page.
+*/
+```
+
+- Class Component
 
 ```jsx
 //1.创建类式组件
