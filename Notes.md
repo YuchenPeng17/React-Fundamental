@@ -202,28 +202,42 @@ Explanation:
 - Class Component
 
 ```jsx
-//1.创建类式组件
-class myComponent extends React.Component{
-  //render(): 放在myComponent的原型对象上供实例使用
-  //this: myComponent组件实例对象
-  render(){
-    return (<h2>我是用类定义的组件（适用于【复杂组件】的定义）</h2>)
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+// 1. Define a class component
+class MyComponent extends React.Component {
+  // render(): Defines what will be displayed by MyComponent instances
+  render() {
+    return <h2>This is a class-based component (suitable for defining more complex components)</h2>;
   }
 }
-//2.渲染组件到页面
-ReactDOM.render(<myComponent/>, document.getElementById('id'));
+
+// 2. Select the root container and render the component
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<MyComponent />);
 
 /*
-1.React解析组件标签，找到myComponent组件。
-2.发现组件是类定义的，随后new出该类的实例，并通过该实例调用原型的render方法。
-3.将render返回的虚拟DOM转换为真实DOM，随后呈现在页面中
-4.props, refs, state组件的三大属性
+Explanation:
+1. React parses the component tag and finds the MyComponent class component.
+2. It creates an instance of the MyComponent class and calls the render method on this instance.
+3. The render method returns a virtual DOM, which React converts into a real DOM element and displays on the page.
+4. Important properties for components:
+   - `props`: Used to pass data to components.
+   - `state`: Used to manage component-specific data.
+   - `refs`: Used to access and interact with DOM elements directly.
 */
 ```
 
+**Basic Process for Rendering a Class Component**
+
+1. React internally creates an instance of the component
+2. Calls `render()` to get the virtual DOM
+3. Converts virtual DOM to real DOM and inserts it into the page
 
 
-#### **class复习**
+
+#### 2.1.3 Class Revision
 
 ```javascript
 class Person {
@@ -231,6 +245,7 @@ class Person {
     this.name = name;
     this.age = age;
   }
+  // Define a method for Person class instances
   speak() {
     console.log(`My name is ${this.name}, I am ${this.age} years old.`);
   }
@@ -238,9 +253,11 @@ class Person {
 
 class Student extends Person {
   constructor(name, age, grade) {
+    // Call the parent class (Person) constructor to initialize name and age
     super(name, age);
     this.grade = grade;
   }
+  // Override the speak method to provide a custom message for Student instances
   speak() {
     console.log(
       `My name is ${this.name}, I am ${this.age} years old in Year ${this.grade}.`
@@ -252,121 +269,199 @@ const s1 = new Student('Yuc', 24, 'Graduated');
 s1.speak();
 
 /*
-1.类中的构造器不是必须写的，要对实例进行一些初始化操作，如添加指定属性时才写。
-2.如果A类继承B类，且A类中写了构造器，那么A类的构造器中的super是必须调用的。
-3.类中所定义的方法，都放在了类的原型对象上，供实例去使用。（子类特有的方法会在子类的原型对象上）
+Explanation:
+1. The constructor is optional in a class; it’s only necessary if we need to initialize properties for the instance.
+2. If Class A inherits from Class B and Class A has a constructor, then `super` must be called in Class A’s constructor to initialize the parent class’s properties.
+3. Methods defined in a class (like `speak`) are added to the class's prototype, allowing instances to access them. Methods specific to the subclass (Student) will only be in the subclass’s prototype.
 */
 ```
 
 
 
-### **组件实例的三大核心**
+### 2.2 Three Core Properties of Components
 
-- state
-- props
-- ref
+- **State**: Holds component-specific data that can change over time, triggering re-renders when updated.
+- **Props**: Used to pass data from parent to child components.
+- **Ref**: Provides a way to directly access and interact with DOM elements or component instances.
 
-Function Component没有this，没有实例化，没有这三大核心
+**Function Components**
+
+- **Lack `this` and instance properties**: Function components do not have `this`, are not instantiated, and do not have direct access to `state`, `props`, or `ref` as class components do.
+- **Alternative Hooks**: Instead, function components use React Hooks like `useState`, `useEffect`, and `useRef` to manage data, lifecycle, and DOM references.
 
 
 
-#### **State**
+#### 2.2.1 state
 
-**定义**: `state` 是组件的“内部数据”，由组件自己维护。
+**Definition**: `state` is a component's <u>internal data</u>, maintained by the component itself.
 
-**作用**: `state` 用来保存组件内部的状态信息，可以通过事件或其他操作修改状态，从而更新界面。
+**Purpose**: `state` stores the component’s internal status and can be updated through events or other actions, allowing the interface to update accordingly.
 
-**特点**: `state` 是可变的，组件可以通过 `setState` 或 `useState` 来修改它的值。
+**Characteristics**: `state` is mutable; it can be modified using `setState` (in class components) or `useState` (in function components).
 
-理解：
+**Understanding:**
 
-1. state的值是一个对象，包含多个key-value的组合。
-2. 组件被称为“状态机”，通过更新组件的state来更新对应的页面显示（重新渲染组件）。
+1. The value of `state` is an object that contains multiple key-value pairs.
+2. A component is considered a "state machine," where updating the component's `state` triggers a re-render, updating the displayed content accordingly.
 
-**强烈注意：**
+**Important Note:**
 
-1. 组件中的render方法中的this为组件实例对象。
+1. The `this` keyword in the `render` method of a component refers to the component instance.
 
-2. 组件自定义的方法中的this为undefined，如何解决？
-
-   - 强制绑定this：通过函数对象的bind()
-
-     ```jsx
-     this.changeWeather = this.changeWeather.bind(this);
-     ```
-
-   - 赋值语句 + 箭头函数
-
-     ```jsx
-     changeWeather = () => {
-       this.setState({isHot:!this.state.isHot});
-     }
-     ```
-
-   - 调用
-
-     ```jsx
-     <h1 onClick={this.changeWeather}>Today's weather is {this.state.isHot ? 'hot' : 'cool'}.</h1>
-     ```
-
-3. 状态数据不能直接修改或更新，必须使用`set.state()`
+2. **Problem:** When using a method inside `render()` (e.g., as an event handler), `this` can be `undefined` because custom function defined within the class is not automatically attached to the component instance.
 
    ```jsx
-   /* 定义与使用 */
-   state = {
-     count: 0
-   };
-   increment = () => {
-     this.setState({ count: this.state.count + 1 });
-   };
-   
-   this.setState({isHot:!this.state.isHot});
+   class Weather extends React.Component {
+   	constructor(props) {
+       super(props);
+       this.state = { isHot: true };
+     }
+     changeWeather() {
+       this.setState({ isHot: !this.state.isHot });
+     }
+     render() {
+       return (
+          // 'this' is undefined here
+         <button onClick={this.changeWeather}>Toggle Weather</button>
+       );
+     }}
    ```
-   
 
+   **Solutions:**
 
+   - **Bind `this` in the Constructor**: By using `bind(this)` in the constructor, you ensure that `this` always refers to the component instance within `changeWeather`.
 
-#### **Props**
+   ```jsx
+   constructor(props) {
+     super(props);
+     this.state = { isHot: true };
+     // Bind 'this' to the method
+     this.changeWeather = this.changeWeather.bind(this);
+   }
+   /* This makes this.changeWeather always refer to the component instance, even when called in render(). */
+   ```
 
-**定义**: `props` 是组件的“外部数据”，由父组件传递给子组件。
+   - **Use an Arrow Function for the Method**: Defining the method with an arrow function automatically binds `this` to the component instance.
 
-**作用**: `props` 用来让组件接收外部的数据，组件不能直接修改这些数据，只能读取和使用。
+   ```jsx
+   changeWeather = () => {
+     this.setState({ isHot: !this.state.isHot });
+   }
+   /* Arrow functions inherit this from the surrounding lexical scope, so this always correctly refers to the component instance within the function. */
+   ```
 
-**特点**: `props` 是不可变的，组件内部不能改变它的值。
-
-1. 关于`...`展开运算符
+3. State data cannot be directly modified or updated; you must use `setState()`.
 
 ```jsx
+/* State Example */
+class Counter extends React.Component {
+  state = {
+    count: 0,
+    isHot: true
+  };
+  incrementCount = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+  toggleTemperature = () => {
+    this.setState({ isHot: !this.state.isHot });
+  };
+  render() {
+    return (
+      <div>
+        <h2>Counter: {this.state.count}</h2>
+        <button onClick={this.incrementCount}>Increment</button>
+        <h2>{this.state.isHot ? 'Hot' : 'Cold'}</h2>
+        <button onClick={this.toggleTemperature}>Toggle Temp</button>
+      </div>
+    );
+  }
+}
+```
+
+
+
+#### 2.2.2 props
+
+**Understanding**:
+
+- `props` are the "external data" of a component, passed from a parent component to a child component.
+- `props` are immutable, components can read and use these data but cannot modify them.
+- Pass data into the component via tag attributes.
+- Each component object has a `props` property (short for "properties").
+- All attributes specified in a component tag are stored in `props`.
+
+```jsx
+/* Props Example */
+// Child class component that receives props
+class UserProfile extends React.Component {
+  render() {
+    /*
+    Destructuring Assignment
+    const { name, age, location } = this.props;
+    */
+    return (
+      <div>
+        <h2>Name: {this.props.name}</h2>
+        <p>Age: {this.props.age}</p>
+        <p>Location: {this.props.location}</p>
+      </div>
+    );
+  }
+}
+// Parent component passing props to UserProfile
+class App extends React.Component {
+	const Person1 = { name: "Arial", age: 23, location: "Melbourne" };
+  render(){
+    return (
+      <div>
+        <UserProfile name="John" age={25} location="New York" />
+        <!-- Spread Syntax -->
+        <UserProfile {...Person1} />
+      </div>
+    );
+  }
+}
+```
+
+
+
+**About the `...` Spread Operator**
+
+```jsx
+/* JSX Example */
 const user = { name: 'John', age: 25 };
 const MyComponent = () => {
     return <UserProfile {...user} />;
 };
 
 /*
-1.这里的{}是说要使用js语法了
-2.使用...user 直接展开 user 对象并将它的属性传递给 UserProfile 组件。这是 JSX 的特性。
+Explanation:
+1. `{}` indicates the use of JavaScript syntax within JSX.
+2. Using `...user` spreads the `user` object properties and passes them as separate props to `UserProfile`. This feature is specific to JSX; it’s not allowed in plain JavaScript.
 */
 ```
 
 ```javascript
+/* Plain JavaScript Example */
 const user = { name: 'John', age: 25 };
 
-// 正确的对象展开用法，用一个{}包裹
+// Correct way to spread an object in JavaScript (wrapped in `{}`)
 const newUser = { ...user, location: 'NY' };
 console.log(newUser); // { name: 'John', age: 25, location: 'NY' }
 
-// 错误的对象展开方式（会报错）
+// Incorrect way to spread (causes a syntax error)
 const result = ...user; // SyntaxError: Unexpected token ...
 
 /*
-1.在原生 JavaScript 中，展开对象时需要用 {} 包裹。{...user} 是将 user 对象的所有属性展开到一个新的对象中。
-2.如果直接使用 ... 展开对象而不在 {} 中，会导致语法错误。
+Explanation:
+1. In plain JavaScript, object spread syntax requires `{}` to wrap the spread operation: `{...user}`. This spreads all properties of `user` into a new object.
+2. Directly using `...` without `{}` will result in a syntax error, as it’s not valid syntax outside of an object or array.
 */
 ```
 
 
 
-2. 关于classComponent的**propTypes和defaultProps**
+**About `propTypes` and `defaultProps` in class components**
 
 ```html
 <!-- Import prop-types for prop type checking -->
@@ -374,53 +469,67 @@ const result = ...user; // SyntaxError: Unexpected token ...
 ```
 
 ```jsx
-// Example of 	propTypes: define prop types
-//							defaultProps: set default value
-Person.propTypes = {
-  name: PropTypes.string.isRequired,
-  age: PropTypes.number,
-  gender: PropTypes.string,
-  speak: PropTypes.func
-};
-Person.defaultProps = {
-  age: 0,
-  gender: "N/A"
-};
-
 /*
-1.如果是类式组件的话，和 static 搭配使用，可以写在 class component 里面。
-2.函数式组件是能写在外面。
-3.类式组件，注意PropTypes 'prop-types' propTypes的区别
+1. For class components, 'propTypes' can be defined inside the component using the `static` keyword.
+2. In class components, note the differences among PropTypes (type validators), 'prop-types' (module name), and propTypes (class property for defining types).
+3. 'PropTypes' provides types such as 'array' and 'func' to specify prop types, e.g., 'PropTypes.func.isRequired'.
 */
-
-import PropTypes from 'prop-types'
-export default class List extends Component {
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+export default class UserProfile extends Component {
   static propTypes = {
-    todos: PropTypes.array.isRequired,
-    updatetodos: PropTypes.func.isRequired,
-    deletetodo: PropTypes.func.isRequired
-  }
+    name: PropTypes.string.isRequired,   // `name` must be a string and is required
+    age: PropTypes.number,      // `age` is optional but must be a number if provided
+    location: PropTypes.string	// `location` is optional but must be a string if provided
+  };
+  static defaultProps = {
+    name: 'Guest',                       // Default name if not provided
+    age: 18,                             // Default age if not provided
+    location: 'Unknown'                  // Default location if not provided
+  };
+  render(){...}
 }
-
 ```
 
 
 
-3. 函数组件使用props
+**Using `props` in functional components**
 
 ```jsx
 function Person(props) {
-    const {name, age, gender} = props;
-    return (
-        <>
-            <ul>
-                <li>Name: {name}</li>
-                <li>Age: {age}</li>
-                <li>Gender: {gender}</li>
-            </ul>
-        </>
-    )
+  const {name, age, gender} = props;
+  return (
+    <ul>
+      <li>Name: {name}</li>
+      <li>Age: {age}</li>
+      <li>Gender: {gender}</li>
+    </ul>
+  )
 }
+```
+
+```jsx
+/* propTypes and defaultProps can be defined outside of functional components. */
+import React from 'react';
+import PropTypes from 'prop-types';
+
+// Define the functional component
+function Person({ name, age, gender, speak }){
+  return (...);
+}
+// Define prop types for validation
+Person.propTypes = {
+    name: PropTypes.string.isRequired, // `name` must be a string and is required
+    age: PropTypes.number,             // `age` is optional and must be a number if provided
+    gender: PropTypes.string,          // `gender` is optional and must be a string if provided
+    speak: PropTypes.func              // `speak` is optional and must be a function if provided
+};
+
+// Define default props
+Person.defaultProps = {
+    age: 0,                           // Default age if not provided
+    gender: "N/A"                     // Default gender if not provided
+};
 ```
 
 
